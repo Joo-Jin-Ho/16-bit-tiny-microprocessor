@@ -11,4 +11,9 @@ Design and implementation of a 16-bit tiny microprocessor using Verilog HDL
 최종적으로 Verilog HDL로 구현한 tinyCPU.v를 기능 시뮬레이션과 Testbench를 통해 검증하였으며, 모든 명령어 테스트가 정상적으로 통과하는 것을 확인하였습니다.
 <img width="1460" height="676" alt="image" src="https://github.com/user-attachments/assets/3cbffda4-173f-4820-bcb6-0cd12c4486fa" />
 
-# 특징
+# Datapath Stage
+1. IF (Instruction Fetch) : 명령어 메모리에서 명령어를 읽고 PC를 갱신
+2. ID (Instruction Decode) : 명령어 해석 및 레지스터 값 읽기
+3. EX (Execute) : ALU 연산, 주소 계산, 분기 조건 판단
+4. MEM (Memory Access) : 데이터 메모리 읽기/쓰기 수행
+5. WB (Write Back) : 연산 결과를 레지스터 파일에 저장
