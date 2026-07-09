@@ -17,3 +17,23 @@ Design and implementation of a 16-bit tiny microprocessor using Verilog HDL
 3. EX (Execute) : ALU 연산, 주소 계산, 분기 조건 판단
 4. MEM (Memory Access) : 데이터 메모리 읽기/쓰기 수행
 5. WB (Write Back) : 연산 결과를 레지스터 파일에 저장
+
+# Data Hazard 해결
+Forwarding 기법 : 파이프라인 구조에서는 앞선 명령어의 결과가 아직 WB 단계에 도달하지 않았는데, 바로 다음 명령어가 그 결과를 필요로 하는 경우 Data Hazard가 발생합니다. 이를 해결하기 위해 Forwarding 기법을 적용하여, 연산 결과를 Register File에 저장될 때까지 기다리지 않고 필요한 단계로 직접 전달합니다.
+
+* 동작 과정
+
+1. Data Hazard 감지
+현재 명령어가 사용하는 source register와 이전 명령어가 값을 저장할 destination register를 비교합니다. 두 register 번호가 같으면 현재 명령어가 이전 명령어의 결과를 필요로 한다고 판단합니다.
+
+2. Forwarding 경로 선택
+필요한 값이 어느 단계에 있는지 확인합니다. ALU 연산 결과는 EX/MEM 단계에서 바로 사용할 수 있고, Write Back 단계까지 진행된 값은 WB 단계에서 가져올 수 있습니다.
+
+3. Execute 단계로 값 전달
+ALU 입력 앞에 있는 Forwarding Multiplexer가 기존 register 값을 사용할지, 아니면 이전 pipeline stage의 결과를 사용할지 선택합니다. 이를 통해 현재 명령어는 stall 없이 바로 올바른 operand를 사용할 수 있습니다.
+
+4. Decode 단계에서 분기 명령어 처리
+조건 분기 명령어인 JZ는 ID 단계에서 조건값을 확인해야 하므로, Decode 단계에도 Forwarding 경로를 추가합니다. 이를 통해 분기 판단에 필요한 값을 이전 명령어로부터 직접 전달받을 수 있습니다.
+
+5. Pipeline Stall 최소화
+대부분의 ALU 연산 간 Data Hazard는 Forwarding만으로 해결할 수 있어 추가적인 stall 없이 명령어를 계속 실행할 수 있습니다. 다만 load-use hazard처럼 메모리에서 읽은 값이 너무 늦게 준비되는 경우에는 stall이 필요할 수 있습니다.
