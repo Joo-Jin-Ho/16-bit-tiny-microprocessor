@@ -37,3 +37,6 @@ ALU 입력 앞에 있는 Forwarding Multiplexer가 기존 register 값을 사용
 
 5. Pipeline Stall 최소화
 대부분의 ALU 연산 간 Data Hazard는 Forwarding만으로 해결할 수 있어 추가적인 stall 없이 명령어를 계속 실행할 수 있습니다. 다만 load-use hazard처럼 메모리에서 읽은 값이 너무 늦게 준비되는 경우에는 stall이 필요할 수 있습니다.
+
+# 명령어 종류
+<img width="1170" height="636" alt="image" src="https://github.com/user-attachments/assets/6645d279-041f-4deb-b42d-3892595f859d" />
